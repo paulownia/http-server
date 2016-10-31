@@ -1,17 +1,17 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'http/server/version'
+require 'httpserver/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "http-server"
-  spec.version       = Http::Server::VERSION
-  spec.authors       = ["takahashi_hisanori"]
-  spec.email         = ["takahashi_hisanori@cyberagent.co.jp"]
+  spec.version       = HTTPServer::VERSION
+  spec.authors       = ["hisanori"]
+  spec.email         = ["hisary@gmail.com"]
 
-  spec.summary       = %q{TODO: Write a short summary, because Rubygems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.summary       = %q{Simple http server for testing.}
+  spec.description   = %q{Simple http server serving static contents on your PC.}
+  spec.homepage      = "http://github.com/paulownia/http-server."
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
