@@ -1,3 +1,5 @@
+require 'optparse'
+
 module HTTPServer
   module Options
     def get(args = ARGV)
