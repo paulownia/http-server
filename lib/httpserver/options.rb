@@ -7,7 +7,7 @@ module HTTPServer
         :Port => 8080,
         :ErrorPageDir => "./errors",
         :DocumentRoot => '.',
-        :BindAddress => '127.0.0.1'
+        :BindAddress => '127.0.0.1',
       }
 
       opts = OptionParser.new
@@ -20,6 +20,10 @@ module HTTPServer
 
       opts.on("-a VAL", "--bind-address=VAL", String, "Bind Address (default 127.0.0.1)") do |value|
         options[:BindAddress] = value
+      end
+
+      opts.on("--error-page-in=VAL", String, "Error Pages Directory (default errors)") do |value|
+        options[:ErrorPageDir] = value
       end
 
       opts.parse!(args)
