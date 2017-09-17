@@ -22,7 +22,7 @@ module HTTPServer
         options[:BindAddress] = value
       end
 
-      opts.on("--error-page-in=VAL", String, "Error Pages Directory (default errors)") do |value|
+      opts.on("-x VAL", "--error-page=VAL", String, "Error Pages Directory (default ${document root}/errors)") do |value|
         options[:ErrorPageDir] = value
       end
 
