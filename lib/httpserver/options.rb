@@ -15,7 +15,10 @@ module HTTPServer
         Logger: nil,
         AccessLogFile: nil,
         AccessLog: nil,
-        ServerType: nil
+        ServerType: nil,
+        SSLCertificate: nil,
+        SSLPrivateKey: nil,
+        SSLEnable: false
       }
 
       opts = OptionParser.new
@@ -42,6 +45,15 @@ module HTTPServer
 
       opts.on('-l VAL', '--log-level=VAL', String, 'Log Level (debug, info, warn, error, fatal, default error)') do |value|
         options[:LogLevel] = to_webrick_log_level(value)
+      end
+      opts.on("-c VAL", "--ssl_cert=VAL", String, "SSL Certificate") do |value|
+        options[:SSLCertificate] = value
+        options[:SSLEnable] = true
+      end
+
+      opts.on("-k VAL", "--ssl_key=VAL", String, "SSL server private key ") do |value|
+        options[:SSLPrivateKey] = value
+        options[:SSLEnable] = true
       end
 
       opts.on('--log-file=VAL', String, 'error log file (default stderr)') do |value|

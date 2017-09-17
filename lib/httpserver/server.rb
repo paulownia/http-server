@@ -1,12 +1,16 @@
 require 'webrick'
 require 'httpserver/mime_types'
 require 'httpserver/handler'
+require 'httpserver/https'
 
 module HTTPServer
   class Server
     def initialize(options)
-      @server = create_server(options)
+      if options[:SSLEnable]
+        self.extend HTTPServer::HTTPs
+      end
 
+      @server = create_server(options)
       @server.config[:MimeTypes] = HTTPServer::MimeTypes::Default
 
       doc_root = options[:DocumentRoot]
