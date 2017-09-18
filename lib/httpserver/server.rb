@@ -6,6 +6,7 @@ module HTTPServer
       @server = WEBrick::HTTPServer.new(
         :BindAddress => options[:BindAddress],
         :Port => options[:Port],
+        :Logger => WEBrick::BasicLog.new(nil, options[:LogLevel])
       )
 
       docRoot = options[:DocumentRoot]
@@ -35,6 +36,7 @@ module HTTPServer
         end
       end
     end
+
 
     def start
       @server.start
