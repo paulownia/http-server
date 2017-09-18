@@ -32,7 +32,13 @@ module HTTPServer
         options[:LogLevel] = to_webrick_log_level(value)
       end
 
-      opts.parse!(args)
+      begin
+        opts.parse!(args)
+      rescue OptionParser::InvalidOption, OptionParser::MissingArgument => e
+        puts e.message
+        puts opts.help
+        exit(1)
+      end
 
       if args[0]
         options[:DocumentRoot] = args[0]
