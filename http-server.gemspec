@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["hisanori"]
   spec.email         = ["hisary@gmail.com"]
 
-  spec.summary       = %q{Simple http server for testing.}
-  spec.description   = %q{Simple http server serving static contents on your PC.}
+  spec.summary       = %q{Simple http server for test.}
+  spec.description   = %q{An http server started with a simple command and serving the files in the current directory.}
   spec.homepage      = "http://github.com/paulownia/http-server."
   spec.license       = "MIT"
 
