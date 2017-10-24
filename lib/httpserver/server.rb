@@ -18,7 +18,7 @@ module HTTPServer
       @server.mount_proc('/') do |req, res|
         begin
           #res.keep_alive = false
-          res["Cache-Control"] = "no-cache"
+          res["Cache-Control"] = "no-store"
           WEBrick::HTTPServlet::FileHandler.new(@server, docRoot, fileHandlerOption).service(req, res)
         rescue WEBrick::HTTPStatus::Error => e
           page = File.join(docRoot, options[:ErrorPageDir] , e.code.to_s + ".html")
