@@ -9,7 +9,7 @@ module HTTPServer
         :ErrorPageDir => "./errors",
         :DocumentRoot => '.',
         :BindAddress => '127.0.0.1',
-        :LogLevel => "error"
+        :LogLevel => WEBrick::BasicLog::ERROR
       }
 
       opts = OptionParser.new
