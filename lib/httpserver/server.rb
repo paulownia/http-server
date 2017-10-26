@@ -11,15 +11,12 @@ module HTTPServer
 
       docRoot = options[:DocumentRoot]
 
-      fileHandlerOption = {
-        :FancyIndexing => true
-      }
+      fileHandler = WEBrick::HTTPServlet::FileHandler.new(@server, docRoot, :FancyIndexing => true)
 
       @server.mount_proc('/') do |req, res|
         begin
-          #res.keep_alive = false
           res["Cache-Control"] = "no-store"
-          WEBrick::HTTPServlet::FileHandler.new(@server, docRoot, fileHandlerOption).service(req, res)
+          fileHandler.service(req, res)
         rescue WEBrick::HTTPStatus::Error => e
           page = File.join(docRoot, options[:ErrorPageDir] , e.code.to_s + ".html")
 
