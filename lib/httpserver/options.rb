@@ -18,7 +18,8 @@ module HTTPServer
         ServerType: nil,
         SSLCertificate: nil,
         SSLPrivateKey: nil,
-        SSLEnable: false
+        SSLEnable: false,
+        AutoSSL: false
       }
 
       opts = OptionParser.new
@@ -62,6 +63,11 @@ module HTTPServer
 
       opts.on('--access-log-file=VAL', String, 'access log file (default stderr)') do |value|
         options[:AccessLogFile] = File.join(Dir.pwd, value)
+      end
+
+      opts.on("--ssl", String, "SSL On") do |value|
+        options[:AutoSSL] = true
+        options[:SSLEnable] = true
       end
 
       begin
