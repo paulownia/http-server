@@ -6,7 +6,8 @@ module HTTPServer
       @server = WEBrick::HTTPServer.new(
         :BindAddress => options[:BindAddress],
         :Port => options[:Port],
-        :Logger => WEBrick::BasicLog.new(nil, options[:LogLevel]),
+        :Logger => options[:Logger],
+        :AccessLog => options[:AccessLog],
         :ServerType => options[:ServerType]
       )
 

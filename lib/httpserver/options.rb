@@ -10,6 +10,10 @@ module HTTPServer
         :DocumentRoot => Dir.pwd,   # current is / if damonized, so get current dir before fork
         :BindAddress => '127.0.0.1',
         :LogLevel => WEBrick::BasicLog::ERROR,
+        :LogFile => nil,
+        :Logger => nil,
+        :AccessLogFile => nil,
+        :AccessLog => nil,
         :ServerType => nil
       }
 
@@ -37,6 +41,14 @@ module HTTPServer
         options[:LogLevel] = to_webrick_log_level(value)
       end
 
+      opts.on("--log-file=VAL", String, "error log file (default stderr)") do |value|
+        options[:LogFile] = File.join(Dir.pwd, value)
+      end
+
+      opts.on("--access-log-file=VAL", String, "access log file (default stderr)") do |value|
+        options[:AccessLogFile] = File.join(Dir.pwd, value)
+      end
+
       begin
         opts.parse!(args)
       rescue OptionParser::InvalidOption, OptionParser::MissingArgument => e
@@ -47,6 +59,18 @@ module HTTPServer
 
       if args[0]
         options[:DocumentRoot] = File.join(options[:DocumentRoot], args[0])
+      end
+
+      if options[:LogFile].nil?
+        options[:Logger] = WEBrick::BasicLog.new(nil, options[:LogLevel])
+      else
+        f = File.open(options[:LogFile], 'a')
+        options[:Logger] = WEBrick::BasicLog.new(f, options[:LogLevel])
+      end
+
+      if options[:AccessLogFile]
+        f = File.open(options[:AccessLogFile], 'a')
+        options[:AccessLog] = [[f, WEBrick::AccessLog::CLF]]
       end
 
       options
