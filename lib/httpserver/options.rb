@@ -7,9 +7,10 @@ module HTTPServer
       options = {
         :Port => 8080,
         :ErrorPageDir => "./errors",
-        :DocumentRoot => '.',
+        :DocumentRoot => Dir.pwd,   # current is / if damonized, so get current dir before fork
         :BindAddress => '127.0.0.1',
-        :LogLevel => WEBrick::BasicLog::ERROR
+        :LogLevel => WEBrick::BasicLog::ERROR,
+        :ServerType => nil
       }
 
       opts = OptionParser.new
@@ -22,6 +23,10 @@ module HTTPServer
 
       opts.on("-a VAL", "--bind-address=VAL", String, "Bind Address (default 127.0.0.1)") do |value|
         options[:BindAddress] = value
+      end
+
+      opts.on("-d", "--daemonize", "Boot as Daemon") do
+        options[:ServerType] = WEBrick::Daemon
       end
 
       opts.on("-x VAL", "--error-page=VAL", String, "Error Pages Directory (default ${document root}/errors)") do |value|
@@ -41,7 +46,7 @@ module HTTPServer
       end
 
       if args[0]
-        options[:DocumentRoot] = args[0]
+        options[:DocumentRoot] = File.join(options[:DocumentRoot], args[0])
       end
 
       options
