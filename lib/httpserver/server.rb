@@ -11,9 +11,9 @@ module HTTPServer
         ServerType: options[:ServerType]
       )
 
-      docRoot = options[:DocumentRoot]
+      doc_root = options[:DocumentRoot]
 
-      fileHandlerOption = {
+      file_handler_option = {
         FancyIndexing: true
       }
 
@@ -21,19 +21,17 @@ module HTTPServer
         begin
           # res.keep_alive = false
           res['Cache-Control'] = 'no-store'
-          WEBrick::HTTPServlet::FileHandler.new(@server, docRoot, fileHandlerOption).service(req, res)
+          WEBrick::HTTPServlet::FileHandler.new(@server, doc_root, file_handler_option).service(req, res)
         rescue WEBrick::HTTPStatus::Error => e
-          page = File.join(docRoot, options[:ErrorPageDir], e.code.to_s + '.html')
+          page = File.join(doc_root, options[:ErrorPageDir], e.code.to_s + '.html')
 
-          if File.exist? page
-            res.status = e.code
-            res.content_type = 'text/html'
-            res.content_length = File.stat(page).size
-            File.open(page) do |file|
-              res.body = file.read
-            end
-          else
-            raise e
+          raise e unless File.exist? page
+
+          res.status = e.code
+          res.content_type = 'text/html'
+          res.content_length = File.stat(page).size
+          File.open(page) do |file|
+            res.body = file.read
           end
         end
       end
