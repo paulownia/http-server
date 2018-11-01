@@ -11,9 +11,9 @@ Starting up http server
 $ http-server
 ```
 
-The document root is current directory.
+The current directory is used as the document root.
 
-If you will specify ```htdocs``` as document root
+If you will specify ```htdocs``` as document root without cd, 
 
 ```
 $ http-server htdocs
@@ -40,6 +40,6 @@ $ http-server -x err
 -h Print help
 -p Port (default 8080)
 -a Bind Address (default 127.0.0.1)
--x Error page directory
+-x Error page directory (relative path to the document root. default './errors')
 -l Log Level (default error)
 ```
