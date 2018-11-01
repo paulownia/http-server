@@ -58,7 +58,7 @@ module HTTPServer
       end
 
       if args[0]
-        options[:DocumentRoot] = File.join(options[:DocumentRoot], args[0])
+        options[:DocumentRoot] = File.expand_path(args[0], options[:DocumentRoot])
       end
 
       if options[:LogFile].nil?

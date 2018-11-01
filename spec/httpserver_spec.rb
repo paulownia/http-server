@@ -12,24 +12,23 @@ describe HTTPServer do
   it 'can parse cli options' do
     opts = HTTPServer::Options.get(['-a', '10.200.1.100', '-p', '9999', './doc_roottttt'])
     expect(opts[:BindAddress]).to eq '10.200.1.100'
-    expect(opts[:DocumentRoot]).to eq './doc_roottttt'
+    expect(opts[:DocumentRoot]).to eq File.expand_path('./doc_roottttt')
     expect(opts[:Port]).to eq 9999
   end
-  
+
   it 'can boot server' do
-    opt = HTTPServer::Options.get(['./spec/htdocs']);
-    opt[:Port] = 8888;
+    opt = HTTPServer::Options.get(['./spec/htdocs'])
+    opt[:Port] = 8888
     server = HTTPServer::Server.new(opt)
-    Thread.new {
+    Thread.new do
       server.start
-    }
+    end
 
-    Net::HTTP.start('localhost', 8888) { |http|
+    Net::HTTP.start('localhost', 8888) do |http|
       res = http.get('/test.html')
-      expect(res.code).to eq "200"
-    }
+      expect(res.code).to eq '200'
+    end
 
-    server.stop 
+    server.stop
   end
 end
-
