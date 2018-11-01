@@ -1,6 +1,6 @@
-require "httpserver/version"
-require "httpserver/server"
-require "httpserver/options"
+require 'httpserver/version'
+require 'httpserver/server'
+require 'httpserver/options'
 
 options = HTTPServer::Options.get
 server = HTTPServer::Server.new(options)
