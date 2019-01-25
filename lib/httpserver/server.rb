@@ -17,6 +17,8 @@ module HTTPServer
         FancyIndexing: true
       }
 
+      WEBrick::HTTPServlet::FileHandler.add_handler('rb', WEBrick::HTTPServlet::CGIHandler)
+
       @server.mount_proc('/') do |req, res|
         begin
           # res.keep_alive = false
