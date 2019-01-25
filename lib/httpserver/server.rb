@@ -9,8 +9,9 @@ module HTTPServer
         Logger: options[:Logger],
         AccessLog: options[:AccessLog],
         ServerType: options[:ServerType],
-        MimeTypes: { 'erb' => 'text/html' }
       )
+
+      @server.config[:MimeTypes]['erb'] = 'text/html'
 
       doc_root = options[:DocumentRoot]
 
