@@ -8,7 +8,8 @@ module HTTPServer
         Port: options[:Port],
         Logger: options[:Logger],
         AccessLog: options[:AccessLog],
-        ServerType: options[:ServerType]
+        ServerType: options[:ServerType],
+        MimeTypes: { 'erb' => 'text/html' }
       )
 
       doc_root = options[:DocumentRoot]
@@ -18,6 +19,7 @@ module HTTPServer
       }
 
       WEBrick::HTTPServlet::FileHandler.add_handler('rb', WEBrick::HTTPServlet::CGIHandler)
+      WEBrick::HTTPServlet::FileHandler.add_handler('erb', WEBrick::HTTPServlet::ERBHandler)
 
       @server.mount_proc('/') do |req, res|
         begin
