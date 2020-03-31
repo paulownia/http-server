@@ -2,6 +2,12 @@
 
 An HTTP Server for testing. It starts up with a simple command and serves the files in the current directory.
 
+## Install
+
+```
+$ rake build
+$ gem install pkg/http-server-x.x.x.gem
+```
 
 ## Usage
 
@@ -13,7 +19,7 @@ $ http-server
 
 The current directory is used as the document root.
 
-If you will specify ```htdocs``` as document root without cd, 
+If you will specify ```htdocs``` as document root without cd,
 
 ```
 $ http-server htdocs
