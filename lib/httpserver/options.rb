@@ -9,7 +9,7 @@ module HTTPServer
         ErrorPageDir: './errors',
         DocumentRoot: Dir.pwd, # current is / if damonized, so get current dir before fork
         BindAddress: '127.0.0.1',
-        LogLevel: WEBrick::BasicLog::ERROR,
+        LogLevel: WEBrick::BasicLog::INFO,
         LogFile: nil,
         Logger: nil,
         AccessLogFile: nil,
