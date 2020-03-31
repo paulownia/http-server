@@ -9,7 +9,7 @@ module HTTPServer
         Port: 8080,
         ErrorPageDir: './errors',
         DocumentRoot: Dir.pwd, # current is / if damonized, so get current dir before fork
-        BindAddress: IPSocket.getaddress('localhost'),
+        BindAddress: default_bind_address,
         LogLevel: WEBrick::BasicLog::INFO,
         LogFile: nil,
         Logger: nil,
@@ -85,6 +85,12 @@ module HTTPServer
       rescue StandardError
         puts "Invalid log level #{log_level}"
         WEBrick::BasicLog::ERROR
+      end
+
+      def default_bind_address
+        IPSocket.getaddress('localhost')
+      rescue
+        '127.0.0.1'
       end
     end
 
