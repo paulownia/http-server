@@ -1,5 +1,6 @@
 require 'optparse'
 require 'webrick'
+require 'socket'
 
 module HTTPServer
   module Options
@@ -8,7 +9,7 @@ module HTTPServer
         Port: 8080,
         ErrorPageDir: './errors',
         DocumentRoot: Dir.pwd, # current is / if damonized, so get current dir before fork
-        BindAddress: '127.0.0.1',
+        BindAddress: IPSocket.getaddress('localhost'),
         LogLevel: WEBrick::BasicLog::INFO,
         LogFile: nil,
         Logger: nil,
