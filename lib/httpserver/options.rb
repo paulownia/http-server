@@ -21,6 +21,8 @@ module HTTPServer
       opts = OptionParser.new
 
       opts.banner = 'Usage: http-server [options] [/path/to/document_root]'
+      opts.program_name = 'http-server'
+      opts.version = HTTPServer::VERSION.split('.')
 
       opts.on('-p VAL', '--port=VAL', OptionParser::DecimalInteger, 'Listen Port (default 8080)') do |value|
         options[:Port] = value
