@@ -1,4 +1,5 @@
 require 'webrick'
+require 'httpserver/mime_types'
 
 module HTTPServer
   class Server
@@ -11,7 +12,7 @@ module HTTPServer
         ServerType: options[:ServerType],
       )
 
-      @server.config[:MimeTypes]['erb'] = 'text/html'
+      @server.config[:MimeTypes] = HTTPServer::MimeTypes::Default
 
       doc_root = options[:DocumentRoot]
 
