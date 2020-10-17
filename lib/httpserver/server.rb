@@ -1,5 +1,6 @@
 require 'webrick'
 require 'httpserver/mime_types'
+require 'httpserver/handler'
 
 module HTTPServer
   class Server
@@ -22,11 +23,13 @@ module HTTPServer
 
       WEBrick::HTTPServlet::FileHandler.add_handler('rb', WEBrick::HTTPServlet::CGIHandler)
       WEBrick::HTTPServlet::FileHandler.add_handler('erb', WEBrick::HTTPServlet::ERBHandler)
+      %w(html js mjs css txt png jpg).each do |ext|
+        WEBrick::HTTPServlet::FileHandler.add_handler(ext, HTTPServer::UncachedFileHandler)
+      end
 
       @server.mount_proc('/') do |req, res|
         begin
           # res.keep_alive = false
-          res['Cache-Control'] = 'no-store'
           WEBrick::HTTPServlet::FileHandler.new(@server, doc_root, file_handler_option).service(req, res)
         rescue WEBrick::HTTPStatus::Error => e
           page = File.join(doc_root, options[:ErrorPageDir], e.code.to_s + '.html')
