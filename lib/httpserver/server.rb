@@ -5,13 +5,7 @@ require 'httpserver/handler'
 module HTTPServer
   class Server
     def initialize(options)
-      @server = WEBrick::HTTPServer.new(
-        BindAddress: options[:BindAddress],
-        Port: options[:Port],
-        Logger: options[:Logger],
-        AccessLog: options[:AccessLog],
-        ServerType: options[:ServerType],
-      )
+      @server = create_server(options)
 
       @server.config[:MimeTypes] = HTTPServer::MimeTypes::Default
 
@@ -52,6 +46,22 @@ module HTTPServer
 
     def stop
       @server.shutdown
+    end
+
+    private
+
+    def create_server(options)
+      server = WEBrick::HTTPServer.new(
+        DoNotListen: true,
+        Port: options[:Port],
+        Logger: options[:Logger],
+        AccessLog: options[:AccessLog],
+        ServerType: options[:ServerType],
+      )
+      options[:BindAddresses].each { |addr|
+        server.listen(addr, options[:Port])
+      }
+      server
     end
   end
 end

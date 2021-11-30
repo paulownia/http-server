@@ -9,7 +9,7 @@ module HTTPServer
         Port: 8080,
         ErrorPageDir: './errors',
         DocumentRoot: Dir.pwd, # current is / if damonized, so get current dir before fork
-        BindAddress: default_bind_address,
+        BindAddresses: default_bind_addresses,
         LogLevel: WEBrick::BasicLog::INFO,
         LogFile: nil,
         Logger: nil,
@@ -28,8 +28,8 @@ module HTTPServer
         options[:Port] = value
       end
 
-      opts.on('-a VAL', '--bind-address=VAL', String, 'Bind Address (default 127.0.0.1)') do |value|
-        options[:BindAddress] = value
+      opts.on('-a VAL', '--bind-address=VAL', Array, 'Bind Address (default ::1, 127.0.0.1)') do |value|
+        options[:BindAddresses] = value.map(&:strip)
       end
 
       opts.on('-d', '--daemonize', 'Boot as Daemon') do
@@ -89,10 +89,8 @@ module HTTPServer
         WEBrick::BasicLog::ERROR
       end
 
-      def default_bind_address
-        IPSocket.getaddress('localhost')
-      rescue
-        '127.0.0.1'
+      def default_bind_addresses
+        ['localhost']
       end
     end
 
