@@ -9,13 +9,6 @@ describe HTTPServer do
     expect(HTTPServer::VERSION).not_to be nil
   end
 
-  it 'can parse cli options' do
-    opts = HTTPServer::Options.get(['-a', '10.200.1.100', '-p', '9999', './doc_roottttt'])
-    expect(opts[:BindAddress]).to eq '10.200.1.100'
-    expect(opts[:DocumentRoot]).to eq File.expand_path('./doc_roottttt')
-    expect(opts[:Port]).to eq 9999
-  end
-
   it 'can boot server' do
     opt = HTTPServer::Options.get(['./spec/htdocs'])
     opt[:Port] = 8888
