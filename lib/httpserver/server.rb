@@ -3,41 +3,13 @@ require 'httpserver/mime_types'
 require 'httpserver/handler'
 
 module HTTPServer
+  #
+  # wrapping webrick http server
+  #
   class Server
     def initialize(options)
-      @server = create_server(options)
-
-      @server.config[:MimeTypes] = HTTPServer::MimeTypes::Default
-
-      doc_root = options[:DocumentRoot]
-
-      file_handler_option = {
-        FancyIndexing: true
-      }
-
-      WEBrick::HTTPServlet::FileHandler.add_handler('rb', WEBrick::HTTPServlet::CGIHandler)
-      WEBrick::HTTPServlet::FileHandler.add_handler('erb', WEBrick::HTTPServlet::ERBHandler)
-      %w(html js mjs css txt png jpg).each do |ext|
-        WEBrick::HTTPServlet::FileHandler.add_handler(ext, HTTPServer::UncachedFileHandler)
-      end
-
-      @server.mount_proc('/') do |req, res|
-        begin
-          # res.keep_alive = false
-          WEBrick::HTTPServlet::FileHandler.new(@server, doc_root, file_handler_option).service(req, res)
-        rescue WEBrick::HTTPStatus::Error => e
-          page = File.join(doc_root, options[:ErrorPageDir], e.code.to_s + '.html')
-
-          raise e unless File.exist? page
-
-          res.status = e.code
-          res.content_type = 'text/html'
-          res.content_length = File.stat(page).size
-          File.open(page) do |file|
-            res.body = file.read
-          end
-        end
-      end
+      @server = Utils.create_server(options)
+      @server.mount("/", CustomErrorPageFileHandler, options[:DocumentRoot], options)
     end
 
     def start
@@ -48,20 +20,30 @@ module HTTPServer
       @server.shutdown
     end
 
-    private
+    WEBrick::HTTPServlet::FileHandler.add_handler('rb', WEBrick::HTTPServlet::CGIHandler)
+    WEBrick::HTTPServlet::FileHandler.add_handler('erb', WEBrick::HTTPServlet::ERBHandler)
+    %w[html js mjs css txt png jpg].each do |ext|
+      WEBrick::HTTPServlet::FileHandler.add_handler(ext, HTTPServer::UncachedFileHandler)
+    end
+  end
 
+  #
+  # utility functions
+  #
+  module Utils
     def create_server(options)
       server = WEBrick::HTTPServer.new(
         DoNotListen: true,
-        Port: options[:Port],
         Logger: options[:Logger],
         AccessLog: options[:AccessLog],
-        ServerType: options[:ServerType],
+        ServerType: options[:ServerType]
       )
       options[:BindAddresses].each { |addr|
         server.listen(addr, options[:Port])
       }
+      server.config[:MimeTypes] = HTTPServer::MimeTypes::Default
       server
     end
+    module_function :create_server
   end
 end

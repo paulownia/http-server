@@ -8,7 +8,7 @@ module HTTPServer
       options = {
         Port: 8080,
         ErrorPageDir: './errors',
-        DocumentRoot: Dir.pwd, # current is / if damonized, so get current dir before fork
+        DocumentRoot: Dir.pwd, # if damonized, Dir.pwd returns '/', so get current dir before fork
         BindAddresses: default_bind_addresses,
         LogLevel: WEBrick::BasicLog::INFO,
         LogFile: nil,
