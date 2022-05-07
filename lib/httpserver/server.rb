@@ -36,9 +36,11 @@ module HTTPServer
         DoNotListen: true,
         Logger: options[:Logger],
         AccessLog: options[:AccessLog],
-        ServerType: options[:ServerType]
+        ServerType: options[:ServerType],
+        Port: nil
       )
       options[:BindAddresses].each { |addr|
+        server.logger.info("HTTP Server Listen #{addr}:#{options[:Port]}")
         server.listen(addr, options[:Port])
       }
       server.config[:MimeTypes] = HTTPServer::MimeTypes::Default
